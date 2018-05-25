@@ -1,0 +1,100 @@
+背景
+    XML 是业界另外一个描述数据的语言。
+    在构建界面、搭建网页、上都有很官方的应用
+规则
+    结点
+        XML 由结点构成，结点的语法是
+        <结点名称 属性1名="属性值" 属性2名="属性值>结点内容</结点名称>
+        样例
+        <text font="menlo">Hello, xml</text>
+    结点的开启和关闭
+        <xxx> 为结点开， </xxx> 为结点关
+        结点开开后，必须关掉
+    结点嵌套
+        结点内容均为文字，但也可以是其它结点
+
+        样例
+        <circle id="200">
+            <origin>
+                <x>10</x>
+                <y>10</y>
+            </origin>
+            <radius>4</radius>
+        </circle>
+    唯一根结点
+        一个 xml 文件里不能有多个 根节点
+        这个是错的
+        <a></a>
+        <b></b>
+    单一嵌套
+        xml 关闭时，必须关闭刚开的
+        这个是错的
+        <a><b></a></b>
+    样式
+        xml里 空格的部分 换行和不换行 是差不多的
+        <a n1="v1" n2="v2"><b>text</b></a>
+        基本等价于
+        <a n1="v1" n2="v2">
+            <b>text</b>
+        </a>
+要求
+    写一个 XML 生成框架，用于 建造 XML 文件。
+    XMLNode: class
+    -   name: String +get +set
+        结点名称
+
+    -   text: String +get +set
+        用于叶子结点存储文字信息使用
+    -   subNodes: List<XMLNode> +get
+        用于存储子结点
+    +   (name: String)
+        构造方法
+        传到 name 里
+    +   addNode(node: XMLNode)
+        添加子结点
+    +   getNode(index: int) -> XMLNode
+        返回第 index 个子结点
+    +   containsSubNodes() -> boolean
+        是否含有子结点
+    +   setAttribute(name: String, value: String)
+        为该结点设置属性
+
+    +   getAttribute(name: String) -> String
+        返回该节点属性名是 name 的值
+    XML: class
+    +   fromXml(node: XMLNode) -> String
+        node 视为根结点，根据结点的信息 输出 整个 xml 作为 String
+        样例
+        XMLNode point = new XMLNode("point");
+        point.setAttribute("id", "100");
+
+        XMLNode x = new XMLNode("x");
+        x.setText("3");
+        point.addNode(x);
+        XMLNode y = new XMLNode("y");
+        y.setText("4");
+        point.addNode(y);
+        XML xml = new XML();
+        String xmlString = xml.fromXml(point);
+        xmlString 此时应该是
+        <point id="100"><x>3</x><y>4</y></point>
+
+    +   fromXmlWithPrettyPrinting(node: XMLNode) -> String
+        node 视为根结点，根据结点的信息 输出 整个 xml 作为 String，带换行样式
+        样例
+        XMLNode point = new XMLNode("point");
+        point.setAttribute("id", "100");
+
+        XMLNode x = new XMLNode("x");
+        x.setText("3");
+        point.addNode(x);
+        XMLNode y = new XMLNode("y");
+        y.setText("4");
+        point.addNode(y);
+        XML xml = new XML();
+        String xmlString = xml.fromXml(point);
+        xmlString 此时应该是
+        <point id="100">
+            <x>3</x>
+            <y>4</y>
+        </point>
